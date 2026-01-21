@@ -3,7 +3,7 @@ import 'bulma/css/bulma.css';
 import './App.scss';
 
 type State = {
-  marked: string | null;
+  selectedGood: string;
 };
 
 type Props = {};
@@ -23,21 +23,29 @@ export const goods = [
 
 export class App extends React.Component<Props, State> {
   state: State = {
-    marked: 'Jam',
+    selectedGood: 'Jam',
+  };
+
+  clearSelection = () => {
+    this.setState({ selectedGood: '' });
+  };
+
+  selectGood = (good: string) => {
+    this.setState({ selectedGood: good });
   };
 
   render() {
     return (
       <main className="section container">
         <h1 className="title is-flex is-align-items-center">
-          {this.state.marked !== null ? (
+          {this.state.selectedGood !== '' ? (
             <>
-              {this.state.marked} is selected
+              {this.state.selectedGood} is selected
               <button
                 data-cy="ClearButton"
                 type="button"
                 className="delete ml-3"
-                onClick={() => this.setState({ marked: null })}
+                onClick={this.clearSelection}
               />
             </>
           ) : (
@@ -53,7 +61,7 @@ export class App extends React.Component<Props, State> {
                   key={good}
                   data-cy="Good"
                   className={
-                    good === this.state.marked
+                    good === this.state.selectedGood
                       ? 'has-background-success-light'
                       : ''
                   }
@@ -61,21 +69,23 @@ export class App extends React.Component<Props, State> {
                   <td>
                     <button
                       data-cy={
-                        good === this.state.marked
+                        good === this.state.selectedGood
                           ? 'RemoveButton'
                           : 'AddButton'
                       }
                       type="button"
                       className={
-                        good === this.state.marked ? 'button is-info' : 'button'
+                        good === this.state.selectedGood
+                          ? 'button is-info'
+                          : 'button'
                       }
                       onClick={() =>
-                        good === this.state.marked
-                          ? this.setState({ marked: null })
-                          : this.setState({ marked: `${good}` })
+                        good === this.state.selectedGood
+                          ? this.clearSelection()
+                          : this.selectGood(good)
                       }
                     >
-                      {good === this.state.marked ? '-' : '+'}
+                      {good === this.state.selectedGood ? '-' : '+'}
                     </button>
                   </td>
 
