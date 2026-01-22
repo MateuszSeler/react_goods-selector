@@ -26,6 +26,14 @@ export class App extends React.Component<Props, State> {
     selectedGood: 'Jam',
   };
 
+  handelClick = (good: string) => {
+    if (good === this.state.selectedGood) {
+      this.clearSelection();
+    } else {
+      this.selectGood(good);
+    }
+  }
+
   clearSelection = () => {
     this.setState({ selectedGood: '' });
   };
@@ -79,11 +87,7 @@ export class App extends React.Component<Props, State> {
                           ? 'button is-info'
                           : 'button'
                       }
-                      onClick={() =>
-                        good === this.state.selectedGood
-                          ? this.clearSelection()
-                          : this.selectGood(good)
-                      }
+                      onClick={() => this.handelClick(good)}
                     >
                       {good === this.state.selectedGood ? '-' : '+'}
                     </button>
